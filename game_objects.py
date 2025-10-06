@@ -2,13 +2,14 @@ import pygame
 import random
 import math
 from typing import List, Tuple, Optional
+from game_config import SpeedController
 
 class Paddle:
     """Класс для ракетки игрока"""
     
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: int, y: int, speed: int = 8):
         self.rect = pygame.Rect(x, y, 100, 20)
-        self.speed = 8
+        self.speed = speed
         self.color = (0, 255, 0)  # GREEN
         self.lives = 3
         self.score = 0
@@ -53,6 +54,7 @@ class Ball:
         self.active = True
         self.sticky = False  # Мяч прилипает к ракетке
         self.power_ball = False  # Мяч разрушает блоки за один удар
+        self.speed_controller = SpeedController()
     
     def move(self) -> None:
         """Перемещение мяча"""
@@ -86,6 +88,7 @@ class Ball:
         self.active = True
         self.sticky = True
         self.power_ball = False
+        self.speed_controller.reset_speed(self)
     
     def launch(self) -> None:
         """Запуск мяча с ракетки"""
@@ -112,6 +115,7 @@ class Ball:
             return True
         return False
 
+# Остальные классы Brick, PowerUp, Particle остаются без изменений
 class Brick:
     """Класс для кирпича"""
     
